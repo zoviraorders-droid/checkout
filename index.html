@@ -96,8 +96,7 @@
     </div>
 
     <script>
-        // تم دمج رابط السكربت الجديد الخاص بك مباشرة هنا
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl4TuisIOseUzfgDPZgj_4j5gjJ8QcAqtoSZeAJJC9bs1JCamdXiU2X4p0riyiGnmJ0Q/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjWr_gFEnaz97sDyHItpwf5_m_44ISn3S1LJDXdAiaKc4TuXPR10X9s7gEcSNszXPf0Q/exec";
 
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
@@ -136,7 +135,6 @@
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             }).then(() => {
                 document.getElementById('formSection').style.display = 'none';
