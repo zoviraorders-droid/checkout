@@ -92,7 +92,7 @@
             border-radius: 10px;
             color: #ffffff;
             font-family: 'Cairo', sans-serif;
-            font-size: 16px; /* Prevents automatic zoom on mobile browsers */
+            font-size: 16px;
             outline: none;
             transition: all 0.25s ease;
         }
@@ -211,6 +211,7 @@
             const btn = document.getElementById('subBtn');
             const msgArea = document.getElementById('msgArea');
 
+            if (btn.disabled) return;
             btn.disabled = true;
             btn.innerText = "Processing order...";
 
