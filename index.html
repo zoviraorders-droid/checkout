@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zoviraa - Secure Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0b0f0e;
+            background-image: 
+                radial-gradient(circle at 50% 20%, #13261c 0%, #0b0f0e 75%),
+                radial-gradient(circle at 10% 90%, #0e1c16 0%, transparent 50%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .checkout-card {
+            background: #121816;
+            border: 1px solid #1f3328;
+            padding: 28px 22px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(204, 255, 0, 0.04);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
+        }
+        .logo-text span { color: #ccff00; }
+        .subtitle { 
+            font-size: 12px; 
+            color: #7c9486; 
+            margin-bottom: 18px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge {
+            background: rgba(204, 255, 0, 0.08);
+            border: 1px solid rgba(204, 255, 0, 0.25);
+            color: #ccff00;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: block;
+            font-size: 13px;
+            box-shadow: inset 0 0 10px rgba(204, 255, 0, 0.03);
+        }
+        .input-group { 
+            text-align: left; 
+            margin-bottom: 14px; 
+        }
+        .input-group label { 
+            display: block; 
+            font-size: 12px; 
+            color: #9cb3a5; 
+            margin-bottom: 5px; 
+            font-weight: 600; 
+        }
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            background: #070a09;
+            border: 1px solid #1a2b22;
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px; /* Prevents automatic zoom on mobile browsers */
+            outline: none;
+            transition: all 0.25s ease;
+        }
+        input:focus { 
+            border-color: #ccff00; 
+            background: #0b0f0e;
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.15); 
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ccff00;
+            color: #0b0f0e;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 6px;
+            box-shadow: 0 4px 15px rgba(204, 255, 0, 0.2);
+        }
+        button:hover { 
+            background: #b3e600; 
+            box-shadow: 0 6px 20px rgba(204, 255, 0, 0.35); 
+        }
+        button:disabled { 
+            background: #25332b; 
+            color: #6c7d74; 
+            cursor: not-allowed; 
+            box-shadow: none; 
+        }
+        .msg-box { 
+            margin-top: 15px; 
+            padding: 12px; 
+            border-radius: 10px; 
+            font-size: 13px; 
+            font-weight: 600; 
+        }
+        .error { 
+            background: rgba(220, 53, 69, 0.12); 
+            border: 1px solid rgba(220, 53, 69, 0.25); 
+            color: #ff6b7b; 
+        }
+        .success { 
+            background: rgba(40, 167, 69, 0.12); 
+            border: 1px solid rgba(40, 167, 69, 0.25); 
+            color: #5ddc82; 
+        }
+        .security-note { 
+            margin-top: 18px; 
+            font-size: 11px; 
+            color: #5a7063; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-card" id="mainBox">
+        <div class="logo-text">ZOVI<span>RA</span></div>
+        <div class="subtitle">Secure Order Activation System</div>
+        
+        <div id="packageBadge" class="badge">Checking package details...</div>
+        
+        <div id="formSection">
+            <form id="orderForm" onsubmit="sendOrder(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="custName" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="custEmail" placeholder="Enter your email address" required>
+                </div>
+                <div class="input-group">
+                    <label>Target Account Username</label>
+                    <input type="text" id="targetAccount" placeholder="e.g. @username" required>
+                </div>
+                <button type="submit" id="subBtn">Confirm & Claim Order</button>
+            </form>
+        </div>
+        
+        <div id="msgArea"></div>
+        <div class="security-note">🔒 Fully encrypted & secure connection - Anti-fraud protection</div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrMerb7SAT1rENDfP_otjigXcPmYAMoKOvgWGXLnlgXnbdZmklzb47JVcw8EYtW5UE8A/exec";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const packageSlug = urlParams.get('pkg') || 'unknown-package';
+
+        const packageNames = {
+            "zovira-ig-500": "500 Instagram Followers (Starter)",
+            "zovira-ig-1500": "1,500 Instagram Followers (Boost)",
+            "zovira-ig-4000": "4,000 Instagram Followers (Pro)",
+            "zovira-ig-10k": "10,000 Instagram Followers (VIP Elite)",
+            "zovira-tt-1000": "1,000 TikTok Followers (Viral)",
+            "zovira-tt-3000": "3,000 TikTok Followers (Trend)",
+            "zovira-tt-5000": "5,000 TikTok Followers (Spotlight)",
+            "zovira-tt-10k": "10,000 TikTok Followers (Legend VIP)"
+        };
+
+        const currentPkgName = packageNames[packageSlug] || "Zoviraa Custom Package";
+        document.getElementById('packageBadge').innerText = currentPkgName;
+
+        if (!token) {
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('msgArea').innerHTML = '<div class="msg-box error">Security Error: Direct access is not allowed. Please complete the offer from the main website first.</div>';
+        }
+
+        function sendOrder(e) {
+            e.preventDefault();
+            const btn = document.getElementById('subBtn');
+            const msgArea = document.getElementById('msgArea');
+
+            btn.disabled = true;
+            btn.innerText = "Processing order...";
+
+            const payload = {
+                token: token,
+                packageName: currentPkgName,
+                name: document.getElementById('custName').value,
+                email: document.getElementById('custEmail').value,
+                targetAccount: document.getElementById('targetAccount').value
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                document.getElementById('formSection').style.display = 'none';
+                msgArea.innerHTML = `<div class="msg-box success">Success! Your order has been registered and delivery will start shortly.</div>`;
+            }).catch(err => {
+                btn.disabled = false;
+                btn.innerText = "Confirm & Claim Order";
+                msgArea.innerHTML = `<div class="msg-box error">Connection error, please try again.</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
